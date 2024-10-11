@@ -1,0 +1,74 @@
+import requests
+import json
+import pandas as pd
+
+api_key = "your_token"  # consigue tu token en la pagina web de Nasa
+url ="https://api.nasa.gov/neo/rest/v1/feed"
+
+params = {
+    "start_date": "2024-10-03",
+    "end_date": "2024-10-10",
+    "api_key": api_key
+}
+
+response = requests.get(url, params=params)
+
+# Verificamos el estado de la respuesta de la API para el éxito de la solicitud
+if response.status_code == 200:
+    print("API request successful")
+    data = response.json()  # Obtenemos datos en formato JSON
+else:
+    print(f"API request failed: {response.status_code}")    
+
+# Miramos los primeros 1000 caracteres de la respuesta JSON
+if response.status_code == 200:
+    json_output = json.dumps(data, indent=2) 
+    # print(json_output[:2500]) # Imprimimos los primeros 1000 caracteres de la respuesta JSON
+else:
+    print(f"API request failed: {response.status_code}")  
+    
+if response.status_code == 200:
+    asteroids = data['near_earth_objects']
+    all_asteroids = []     
+    
+    for date, asteroid_list in asteroids.items():
+        for asteroid in asteroid_list:
+            all_asteroids.append({
+                'name': asteroid['name'],
+                'close_approach_date': date,
+                'estimated_diameter_km': asteroid['estimated_diameter']['kilometers']['estimated_diameter_max'],
+                'is_potentially_hazardous': asteroid['is_potentially_hazardous_asteroid'],
+                'relative_velocity_km_s': asteroid['close_approach_data'][0]['relative_velocity']['kilometers_per_second'],
+                'miss_distance_km': asteroid['close_approach_data'][0]['miss_distance']['kilometers']
+            })
+    # Creamos un DataFrame a partir de los datos obtenidos e imprimimos las primeras 5 filas
+    df = pd.DataFrame(all_asteroids)
+    # print(df.head(5)) 
+else:
+    print(f"API request failed: {response.status_code}") 
+    
+# Verificamos nuestro df
+
+# num_rows = df.shape[0]  # cuántas filas hay en la tabla
+# print("Number of rows:", num_rows)
+
+# print(df.columns) # imprimimos los nombres de las columnas
+
+null_values = df.isnull().sum()  # cuántos valores faltan en cada columna
+# print("Number of null values per column:", null_values)
+       
+# Analizamos los datos
+print("Number of potentially hazardous asteroids:", df[df['is_potentially_hazardous'] == True]['name'].count())
+print("Max asteroid diameter:", df['estimated_diameter_km'].max())
+print("Min asteroid diameter:", df['estimated_diameter_km'].min())
+
+# Encontramos asteroides con la distancia mínima a la Tierra
+min_distance = df['miss_distance_km'].min()
+aster_min = df[df['miss_distance_km'] == min_distance]
+print(aster_min)
+
+#print(df['relative_velocity_km_s'].dtype)
+# print(df['relative_velocity_km_s'].unique())
+df['relative_velocity_km_s'] = df['relative_velocity_km_s'].astype(float)# convertimos la columna a float para poder calcular la media
+# print(df['relative_velocity_km_s'].dtype)
+print("Average relative velocity:", df['relative_velocity_km_s'].mean())  # velocidad media de los asteroides en kilómetros por segundo
