@@ -1,6 +1,8 @@
 # NASA_API_Python_DF
 # Análisis de asteroides utilizando la API de NASA
 
+![](https://github.com/elena210910/NASA_API_Python_DF/blob/main/asteroid_image.jpg)
+
 Este proyecto utiliza la API gratuita y abierta de NASA ([enlace a la API](https://api.nasa.gov/)) para obtener datos sobre asteroides.
 Según la documentación, se pueden obtener datos solo por un período de 7 días. Elegí el tema de asteroides para este análisis.
 
