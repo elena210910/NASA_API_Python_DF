@@ -18,6 +18,12 @@ Los datos obtenidos se transforman en un DataFrame de Pandas para su  análisis.
 - 
 [El codigo de Python](https://github.com/elena210910/NASA_API_Python_DF/blob/main/Python_code)
 
+
+**DATA FRAME creado con Pandas**
+
+![](https://github.com/elena210910/NASA_API_Python_DF/blob/main/df_asteroids.PNG)
+
+
 ### Análisis
 
 Realizamos un análisis basado en los datos obtenidos, donde calculamos la cantidad de asteroides potencialmente peligrosos, 
