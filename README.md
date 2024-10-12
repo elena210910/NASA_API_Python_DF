@@ -19,7 +19,7 @@ Los datos obtenidos se transforman en un DataFrame de Pandas para su  análisis.
 [El codigo de Python](https://github.com/elena210910/NASA_API_Python_DF/blob/main/Python_code)
 
 
-**DATA FRAME creado con Pandas**
+**DATA FRAME creado con Pandas**(primeros 10 filas)
 
 ![](https://github.com/elena210910/NASA_API_Python_DF/blob/main/df_asteroids.PNG)
 
